@@ -14,7 +14,7 @@ void solve()
   int cnt =0;
   while(st<=end)
   {
-    mid = (st+end)/2;
+    mid = st+ (end-st)/2;
     if(v[mid] == key)
     {
       cout<<"Present at"<<" "<<mid+1<<endl;
