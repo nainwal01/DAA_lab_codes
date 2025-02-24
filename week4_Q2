@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+int comp = 0;
+int swapCount = 0;
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j <= high - 1; j++) {
+        comp++;
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+            swapCount++;  // Increment swap count
+        }
+    }
+    
+    swap(arr[i + 1], arr[high]);
+    swapCount++;  // Increment swap count for final pivot placement
+    return i + 1;
+}
+
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    
+    for (int &i : arr) {
+        cin >> i;
+    }
+
+    swapCount = 0;
+    comp = 0;
+    quickSort(arr, 0, n - 1);
+
+    for (int i : arr)
+        cout << i << " ";
+    
+    cout << endl;
+    cout << "Swaps: " << swapCount << endl;
+    cout << "Comparisons: " << comp << endl;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
