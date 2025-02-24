@@ -1,0 +1,86 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+int quickselect(vector<int>& arr, int low, int high, int k) {
+    if (low == high)
+        return arr[low];
+
+    int pi = partition(arr, low, high);
+
+    if (pi == k)
+        return arr[pi];
+    else if (pi < k)
+        return quickselect(arr, pi + 1, high, k);
+    else
+        return quickselect(arr, low, pi - 1, k);
+}
+
+vector<int> findKLargest(vector<int>& arr, int k) {
+    int n = arr.size();
+    int kthLargest = quickselect(arr, 0, n - 1, n - k);
+    vector<int> result;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] >= kthLargest) {
+            result.push_back(arr[i]);
+        }
+    }
+    return result;
+}
+
+vector<int> findKSmallest(vector<int>& arr, int k) {
+    int n = arr.size();
+    int kthSmallest = quickselect(arr, 0, n - 1, k - 1);
+    vector<int> result;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] <= kthSmallest) {
+            result.push_back(arr[i]);
+        }
+    }
+    return result;
+}
+
+void solve() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> arr(n);
+    for (int &i : arr) {
+        cin >> i;
+    }
+
+    vector<int> largest = findKLargest(arr, k);
+    vector<int> smallest = findKSmallest(arr, k);
+
+    cout << "K largest elements: ";
+    for (int i : largest) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    cout << "K smallest elements: ";
+    for (int i : smallest) {
+        cout << i << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
